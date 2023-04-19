@@ -1,3 +1,6 @@
+import { Cell } from "./Cell";
+
+
 class Game {
   #config = {
     easy: {
@@ -43,7 +46,7 @@ class Game {
     for (let row = 0; row < this.#numberOfRows; row++) {
         this.cells[row] = []
         for (let col = 0; col < this.#numberOfCols; col++) {
-            this.#cells[row].push()
+            this.#cells[row].push(new Cell(col, row))
             
         }
         
