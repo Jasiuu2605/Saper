@@ -18,6 +18,15 @@ export class Cell extends UI {
     this.isReveal = true;
     this.element.classList.remove("border--concave");
     this.element.classList.add("border--revealed");
+
+    if (this.isMine) {
+        this.element.classList.add('cell--is-mine');
+       return
+    }
+    if (this.value) {
+        this.element.textContent = this.value;
+        this.element.classList.add(`cell-info-${this.value}`)
+    }
   }
 
   createElement() {
@@ -28,5 +37,9 @@ export class Cell extends UI {
   toggleflag() {
     this.isFlagged = !this.isFlagged;
     this.element.classList.toggle("cell--is-flag");
+  }
+
+  addMine() {
+    this.isMine = true;
   }
 }
