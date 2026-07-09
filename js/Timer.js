@@ -1,9 +1,8 @@
-import { UI } from "./Ui.js";
+import { UI } from "./UI.js";
 
 export class Timer extends UI {
   #element = null;
   numberOfSeconds = 0;
-  maxNumberOfSeconds = 7;
   #interval = null;
 
   init() {
@@ -17,19 +16,20 @@ export class Timer extends UI {
   }
 
   stopTimer() {
-    clearInterval(this.#interval)
+    clearInterval(this.#interval);
+    this.#interval = null;
   }
 
   resetTimer() {
     this.numberOfSeconds = 0;
     this.#setTimerValue(this.numberOfSeconds);
     this.stopTimer();
-    this.#startTimer()
+    this.#startTimer();
   }
 
   #updateTimer() {
     this.numberOfSeconds++;
-    this.maxNumberOfSeconds <= this.maxNumberOfSeconds ? this.#setTimerValue(this.numberOfSeconds) : this.stopTimer();
+    this.#setTimerValue(this.numberOfSeconds);
   }
 
   #setTimerValue(value) {

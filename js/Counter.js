@@ -1,4 +1,4 @@
-import { UI } from "./Ui.js";
+import { UI } from "./UI.js";
 
 
 export class Counter extends UI {

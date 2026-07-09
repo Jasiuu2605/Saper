@@ -141,12 +141,7 @@ class Game extends UI {
       return;
     }
 
-    this.#modal.infoText =
-      this.#timer.numberOfSeconds < this.#timer.maxNumberOfSeconds
-        ? `You won, it took you ${
-            this.#timer.numberOfSeconds
-          } seconds, congratulations`
-        : "You won, congratulations";
+    this.#modal.infoText = `You won, it took you ${this.#timer.numberOfSeconds} seconds, congratulations`;
     this.#buttons.reset.changeEmotion("positive");
     this.#modal.setText();
     this.#modal.toggleModal();
@@ -253,15 +248,16 @@ class Game extends UI {
   }
 
   #getRandomInteger(min, max) {
-    return Math.floor(Math.random() * max - min + 1) + min;
+    return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
   #clickCell(cell) {
-    if (this.#isGameFinished || cell.isFlagged) {
+    if (this.#isGameFinished || cell.isFlagged || cell.isReveal) {
       return;
     }
     if (cell.isMine) {
       this.#endGame(false);
+      return;
     }
     this.#setCellValue(cell);
 
