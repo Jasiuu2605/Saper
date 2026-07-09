@@ -14,28 +14,49 @@
     <link rel="stylesheet" href="./css/style.css" />
   </head>
   <body>
-    <main class="game">
-      <header class="header border border--convex">
-        <article class="header__counter" data-counter>0</article>
-        <button class="header__reset border border--concave" data-button-reset>
-          <svg class="header__button">
-            <use href="./assets/sprite.svg#neutral"></use>
-          </svg>
-        </button>
+    <main class="page">
+      <section class="hero" aria-labelledby="game-title">
+        <p class="hero__eyebrow">Vanilla JavaScript game</p>
+        <h1 class="hero__title" id="game-title">Minesweeper</h1>
+        <p class="hero__subtitle">
+          A classic logic game with three difficulty levels, a mine counter and
+          a running timer.
+        </p>
+        <ul class="hero__meta" aria-label="Available difficulty levels">
+          <li>Easy 8x8</li>
+          <li>Normal 16x16</li>
+          <li>Expert 16x30</li>
+        </ul>
+      </section>
 
-        <article class="header__counter" data-timer>0</article>
-      </header>
-      <article class="game__board border border--convex" data-board></article>
-      <article class="game__panel border border--convex">
-        <header class="panel__header">
-          <h1 class="panel__heading">Select difficulty</h1>
+      <section class="game" aria-label="Minesweeper board">
+        <header class="header border border--convex">
+          <article class="header__counter" data-counter>0</article>
+          <button class="header__reset border border--concave" data-button-reset>
+            <svg class="header__button">
+              <use href="./assets/sprite.svg#neutral"></use>
+            </svg>
+          </button>
+
+          <article class="header__counter" data-timer>0</article>
         </header>
-        <section class="panel__buttons">
-          <button class="button" data-button-easy>Easy</button
-          ><button class="button" data-button-normal>Normal</button
-          ><button class="button" data-button-expert>Expert</button>
-        </section>
-      </article>
+        <article class="game__board border border--convex" data-board></article>
+        <article class="game__panel border border--convex">
+          <header class="panel__header">
+            <h2 class="panel__heading">Select difficulty</h2>
+          </header>
+          <section class="panel__buttons">
+            <button class="button" data-button-easy>Easy</button
+            ><button class="button" data-button-normal>Normal</button
+            ><button class="button" data-button-expert>Expert</button>
+          </section>
+        </article>
+      </section>
+
+      <footer class="page__footer">
+        ES Modules / CSS Grid / Classic Minesweeper mechanics
+      </footer>
+
       <article class="modal hide" data-modal>
         <section class="modal__content">
           <h2 class="modal__text" data-modal-header>You won!</h2>
