@@ -212,6 +212,13 @@ button {
   letter-spacing: 0.08em;
 }
 
+.panel__best-time {
+  margin-top: 0.6rem;
+  color: var(--muted-color);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
 .panel__buttons {
   display: flex;
   gap: 0.8rem;

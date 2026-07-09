@@ -28,6 +28,9 @@ class Game extends UI {
   #timer = new Timer();
   #modal = new Modal();
   #isGameFinished = false;
+  #currentDifficulty = "easy";
+  #bestTimeElement = null;
+  #bestTimeStorageKey = "minesweeperBestTimes";
 
   #numberOfRows = null;
   #numberOfCols = null;
@@ -59,6 +62,7 @@ class Game extends UI {
     this.#buttons.modal.addEventListener("click", this.#modal.toggleModal);
     this.#buttons.easy.addEventListener("click", () => {
       this.#handleNewGameClick(
+        "easy",
         this.#config.easy.rows,
         this.#config.easy.cols,
         this.#config.easy.mines
@@ -67,6 +71,7 @@ class Game extends UI {
 
     this.#buttons.normal.addEventListener("click", () => {
       this.#handleNewGameClick(
+        "normal",
         this.#config.normal.rows,
         this.#config.normal.cols,
         this.#config.normal.mines
@@ -75,6 +80,7 @@ class Game extends UI {
 
     this.#buttons.expert.addEventListener("click", () => {
       this.#handleNewGameClick(
+        "expert",
         this.#config.expert.rows,
         this.#config.expert.cols,
         this.#config.expert.mines
@@ -87,19 +93,22 @@ class Game extends UI {
   }
 
   #handleNewGameClick(
+    difficulty = this.#currentDifficulty,
     rows = this.#numberOfRows,
     cols = this.#numberOfCols,
     mines = this.#numberOfMines
   ) {
     this.#removeCellsEventListeners();
-    this.#newGame(rows, cols, mines);
+    this.#newGame(difficulty, rows, cols, mines);
   }
 
   #newGame(
+    difficulty = "easy",
     rows = this.#config.easy.rows,
     cols = this.#config.easy.cols,
     mines = this.#config.easy.mines
   ) {
+    this.#currentDifficulty = difficulty;
     this.#numberOfRows = rows;
     this.#numberOfCols = cols;
     this.#numberOfMines = mines;
@@ -125,6 +134,7 @@ class Game extends UI {
     this.#revealedCells = 0;
 
     this.#addCellsEventListeners();
+    this.#updateBestTimeInfo();
   }
 
   #endGame(isWin) {
@@ -141,7 +151,13 @@ class Game extends UI {
       return;
     }
 
-    this.#modal.infoText = `You won, it took you ${this.#timer.numberOfSeconds} seconds, congratulations`;
+    const isNewBestTime = this.#saveBestTime();
+    this.#modal.infoText = `You won, it took you ${
+      this.#timer.numberOfSeconds
+    } seconds${
+      isNewBestTime ? ", new best time!" : ", congratulations"
+    }`;
+    this.#updateBestTimeInfo();
     this.#buttons.reset.changeEmotion("positive");
     this.#modal.setText();
     this.#modal.toggleModal();
@@ -166,6 +182,7 @@ class Game extends UI {
     this.#buttons.easy = this.getElement(this.UiSelectors.easyButton);
     this.#buttons.normal = this.getElement(this.UiSelectors.normalButton);
     this.#buttons.expert = this.getElement(this.UiSelectors.expertButton);
+    this.#bestTimeElement = this.getElement(this.UiSelectors.bestTime);
   }
 
   #generateCells() {
@@ -312,6 +329,45 @@ class Game extends UI {
       .flat()
       .filter(({ isMine }) => isMine)
       .forEach((cell) => cell.revealCell());
+  }
+
+  #getBestTimes() {
+    const storedBestTimes = localStorage.getItem(this.#bestTimeStorageKey);
+
+    if (!storedBestTimes) {
+      return {};
+    }
+
+    try {
+      return JSON.parse(storedBestTimes);
+    } catch {
+      return {};
+    }
+  }
+
+  #saveBestTime() {
+    const bestTimes = this.#getBestTimes();
+    const currentBestTime = bestTimes[this.#currentDifficulty];
+
+    if (
+      currentBestTime &&
+      currentBestTime <= this.#timer.numberOfSeconds
+    ) {
+      return false;
+    }
+
+    bestTimes[this.#currentDifficulty] = this.#timer.numberOfSeconds;
+    localStorage.setItem(this.#bestTimeStorageKey, JSON.stringify(bestTimes));
+
+    return true;
+  }
+
+  #updateBestTimeInfo() {
+    const bestTime = this.#getBestTimes()[this.#currentDifficulty];
+
+    this.#bestTimeElement.textContent = bestTime
+      ? `Best time: ${bestTime}s`
+      : "Best time: --";
   }
 }
 

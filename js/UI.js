@@ -5,6 +5,7 @@ export class UI {
     cell: "[data-cell]",
     counter: "[data-counter]",
     timer: "[data-timer]",
+    bestTime: "[data-best-time]",
     resetButton: "[data-button-reset]",
     easyButton: "[data-button-easy]",
     normalButton: "[data-button-normal]",
